@@ -2,13 +2,8 @@ package com.example.locationmethodchannel2;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
-
-import java.util.ArrayList;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
@@ -26,29 +21,34 @@ public class MainActivity extends FlutterActivity {
           .setMethodCallHandler(
             (call, result) -> {
               Context ctx = this.getApplicationContext();
-              //locationTrack = LocationTrack.getInstance();
-              //locationTrack.initLocation(ctx,this);
-              // Note: this method is invoked on the main thread.
-              // TODO
-              if (call.method.equals("getLocation")) {
-                  try{
-                      double lng = getLongitude();
-                      double lat = getLatitude();
-                      result.success(lng);
-                  } catch(Exception e) {
-                      result.error("1",e.getMessage(),null);
-                  }
-
-              } else if(call.method.equals("initLocation")) {
-                  try{
-                      initLocation(ctx,this);
-                      result.success("Successfully Initialised");
-                  } catch(Exception e) {
-                      result.error("1",e.getMessage(),null);
-                  }
-              } else {
-                result.notImplemented();
-              }
+                switch (call.method) {
+                    case "getLongitude":
+                        try{
+                            double lng = getLongitude();
+                            result.success(lng);
+                        } catch(Exception e) {
+                            result.error("1",e.getMessage(),null);
+                        }
+                        break;
+                    case "getLatitude":
+                        try{
+                            double lat = getLatitude();
+                            result.success(lat);
+                        } catch(Exception e) {
+                            result.error("1",e.getMessage(),null);
+                        }
+                        break;
+                    case "initLocation":
+                        try{
+                            initLocation(ctx,this);
+                            result.success("Successfully Initialised");
+                        } catch(Exception e) {
+                            result.error("1",e.getMessage(),null);
+                        }
+                        break;
+                    default:
+                        result.notImplemented();
+                }
             }
           );
 
@@ -60,8 +60,6 @@ public class MainActivity extends FlutterActivity {
     }
 
     private double getLongitude() throws Exception {
-        //locationTrack = LocationTrack.getInstance();
-
         if (locationTrack.canGetLocation()) {
             return locationTrack.getLongitude();
         } else {
@@ -70,8 +68,6 @@ public class MainActivity extends FlutterActivity {
     }
 
     private double getLatitude() throws Exception {
-        //locationTrack = LocationTrack.getInstance();
-
         if (locationTrack.canGetLocation()) {
             return locationTrack.getLatitude();
         } else {
