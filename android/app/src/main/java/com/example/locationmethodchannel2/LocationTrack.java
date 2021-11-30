@@ -41,14 +41,7 @@ public class LocationTrack extends Service implements LocationListener {
 
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
     protected LocationManager locationManager;
-
-//    public LocationTrack(Context mContext, Activity act) {
-//        this.mContext = mContext;
-//        this.mActivity = act;
-//        getLocation();
-//    }
-//
-
+    
     public static LocationTrack getInstance()
     {
         if (single_instance == null)
@@ -63,7 +56,7 @@ public class LocationTrack extends Service implements LocationListener {
         getLocation();
     }
 
-    private Location getLocation() {
+    private void getLocation() {
 
         try {
             locationManager = (LocationManager) mContext
@@ -105,48 +98,16 @@ public class LocationTrack extends Service implements LocationListener {
 
 
                 }
-
-
-                /*if (checkNetwork) {
-
-
-                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                    }
-                    locationManager.requestLocationUpdates(
-                            LocationManager.NETWORK_PROVIDER,
-                            MIN_TIME_BW_UPDATES,
-                            MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-
-                    if (locationManager != null) {
-                        loc = locationManager
-                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-                    }
-
-                    if (loc != null) {
-                        latitude = loc.getLatitude();
-                        longitude = loc.getLongitude();
-                    }
-                }*/
-
             }
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return loc;
     }
 
     public double getLongitude() {
+        getLocation();
         if (loc != null) {
             longitude = loc.getLongitude();
         }
@@ -154,6 +115,7 @@ public class LocationTrack extends Service implements LocationListener {
     }
 
     public double getLatitude() {
+        getLocation();
         if (loc != null) {
             latitude = loc.getLatitude();
         }

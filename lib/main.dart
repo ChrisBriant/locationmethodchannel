@@ -30,7 +30,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-    // Get battery level.
   double _lat = 0.0;
   double _lng = 0.0;
   static const platform = MethodChannel('chrisbriant.uk.dev/location');
@@ -77,6 +76,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
+    _reportLocation() {
+      print('Getting Locaiton');
+      _getLocation();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Location $_lat, $_lng.'),
+      ));
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -88,6 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               'Your location is $_lat, $_lng.',
             ),
+            ElevatedButton(
+              onPressed: () => {_reportLocation()}, 
+              child: Text('Report Location')
+            )
           ],
         ),
       ),
